@@ -1,38 +1,136 @@
-.App {
-  text-align: center;
+@import url(index.css);
+
+.header {
+  position: relative;
+  box-shadow: 2px 0px 8px 2px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 10rem;
+  z-index: 4;
+  background-color: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header__content {
+  margin: 0 auto;
+  display: flex;
+  max-width: 1020px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.header__logo img{
+  width: 46px;
+  height: 49px;
+  transition: 0.4s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header__logo img:hover {
+  transform: scale(1.2);
+}
+
+.header__logo img:active {
+  transform: scale(0.9);
+}
+
+.header__nav {
+  display: flex;
+  gap: 2rem;
+  font-weight: 700;
+}
+
+.header__nav a {
+  display: block;
+  color: black;
+  transition: 0.3s;
+}
+
+
+.header__nav a:hover {
+  transform: scale(1.1);
+}
+
+.header__nav a::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0;
+  background: rgb(0, 0, 0);
+  transition: 0.3s;
+  margin: auto;
+  border-radius: 1px;
+}
+
+.header__nav a:active::after {
+  width: 100%;
+}
+
+
+/* Mobile-menu */
+
+.mobile-menu {
+  position: absolute;
+  display: none;
+  top: 69px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: white;
+  transition: 0.3s ease;
+  z-index: 3;
+  padding: 2rem;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.mobile-menu.open {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+}
+
+.mobile-menu__items {
+  flex-direction: column;
+  font-size: 24px;
+}
+
+.burger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.burger-btn::after {
+  content: '×';
+  cursor: pointer;
+  display: none;
+  pointer-events: auto;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 36px;
+}
+
+.burger-btn.open span {
+  display: none;
+}
+
+.burger-btn.open::after {
+  display: block;
+}
+
+.burger-btn span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: black;
+}
+
+
+/* Footer */
+.footer {
+  box-shadow: 2px 0px 8px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 1rem 15rem;
+  text-align: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
 }

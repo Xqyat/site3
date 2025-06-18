@@ -1,24 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+import Characters from './components/characters/characters';
+import CharactersDetails from './components/characters/characters-details';
+
+import Episodes from './components/episodes/episodes';
+import EpisodesDetails from './components/episodes/episodes-details';
+
+import Locations from './components/locations/locations';
+import LocationsDetails from './components/locations/locations-details';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+
+      <Routes>
+        <Route path="/characters" element={<Characters />} />
+        <Route path="/characters/:id" element={<CharactersDetails />} />
+
+        <Route path="/locations" element={<Locations />} />
+        <Route path="/locations/:id" element={<LocationsDetails />} />
+
+        <Route path="/episodes" element={<Episodes />} />
+        <Route path="/episodes/:id" element={<EpisodesDetails />} />
+
+        {/* Можно добавить маршрут по умолчанию */}
+        <Route path="*" element={<Characters />} />
+      </Routes>
+
+      <Footer />
+    </Router>
   );
 }
 
