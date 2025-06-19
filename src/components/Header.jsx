@@ -1,6 +1,7 @@
 import logo from '../assets/images/logo-black.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { LogoIcon } from './icons/icons';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,7 @@ export default function Header() {
         <div className="header__content">
           <div className="header__logo">
             <Link to="/characters">
-              <img src={logo} alt="Logo" />
+              <LogoIcon />
             </Link>
           </div>
           <nav className="header__nav">

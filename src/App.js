@@ -1,4 +1,5 @@
 import './App.css';
+import { DataProvider } from './context/DataContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -15,25 +16,26 @@ import LocationsDetails from './components/locations/locations-details';
 
 function App() {
   return (
-    <Router>
-      <Header />
+    <DataProvider>
+      <Router>
+        <Header />
 
-      <Routes>
-        <Route path="/characters" element={<Characters />} />
-        <Route path="/characters/:id" element={<CharactersDetails />} />
+        <Routes>
+          <Route path="/characters" element={<Characters />} />
+          <Route path="/characters/:id" element={<CharactersDetails />} />
 
-        <Route path="/locations" element={<Locations />} />
-        <Route path="/locations/:id" element={<LocationsDetails />} />
+          <Route path="/locations" element={<Locations />} />
+          <Route path="/locations/:id" element={<LocationsDetails />} />
 
-        <Route path="/episodes" element={<Episodes />} />
-        <Route path="/episodes/:id" element={<EpisodesDetails />} />
+          <Route path="/episodes" element={<Episodes />} />
+          <Route path="/episodes/:id" element={<EpisodesDetails />} />
 
-        {/* Можно добавить маршрут по умолчанию */}
-        <Route path="*" element={<Characters />} />
-      </Routes>
+          <Route path="*" element={<Characters />} />
+        </Routes>
 
-      <Footer />
-    </Router>
+        <Footer />
+      </Router>
+    </DataProvider>
   );
 }
 

@@ -1,54 +1,43 @@
 import './characters-details.css';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useData } from '../../context/DataContext';
 
 export default function CharacterDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [character, setCharacter] = useState(null);
-  const [episodes, setEpisodes] = useState([]);
+
+  const {
+    character,
+    getCharacterById,
+    episodesByIds,
+    getEpisodesByIds,
+  } = useData();
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Character not found');
-        return res.json();
-      })
-      .then(data => {
-        setCharacter(data);
-  
-        if (Array.isArray(data.episode)) {
-          const firstFourEpisodeUrls = data.episode.slice(0, 4);
-          return Promise.all(
-            firstFourEpisodeUrls.map(url =>
-              fetch(url)
-                .then(res => {
-                  if (!res.ok) throw new Error('Failed to fetch episode');
-                  return res.json();
-                })
-            )
-          );
-        } else {
-          return [];
-        }
-      })
-      .then(setEpisodes)
-      .catch(error => {
-        console.error('Error fetching character or episodes:', error);
-      });
+    getCharacterById(id);
   }, [id]);
-  
+
+  // Загружаем эпизоды, если есть character
+  useEffect(() => {
+    if (character && Array.isArray(character.episode)) {
+      const ids = character.episode
+        .slice(0, 4)
+        .map(url => url.split('/').pop());
+      getEpisodesByIds(ids);
+    }
+  }, [character]);
 
   if (!character) return <div>Loading...</div>;
 
-  const locationId = character.location.url?.split('/').pop();
   return (
     <main className="main">
       <button className="goback-btn" onClick={() => navigate(-1)}>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="black" />
-        </svg>GO BACK</button>
+        </svg>
+        GO BACK
+      </button>
 
       <section className="character-details">
         <div className="character-details__portrait">
@@ -65,39 +54,39 @@ export default function CharacterDetails() {
               ['Origin', character.origin.name],
               ['Type', character.type || 'Unknown'],
               ['Location', character.location.name, character.location.url]
-              ].map(([label, value, url], i) => {
-                const locationId = url?.split('/').pop();
-                const content = (
-                  <>
-                    <div className="informations__item-contetnt">
-                      <h6>{label}</h6>
-                      <span>{value}</span>
+            ].map(([label, value, url], i) => {
+              const locationId = url?.split('/').pop();
+              const content = (
+                <>
+                  <div className="informations__item-contetnt">
+                    <h6>{label}</h6>
+                    <span>{value}</span>
+                  </div>
+                  {url && (
+                    <div className="informations__item-svg">
+                      <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
+                      </svg>
                     </div>
-                    {url && (
-                      <div className="informations__item-svg">
-                        <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
-                        </svg>
-                      </div>
-                    )}
-                  </>
-                );
+                  )}
+                </>
+              );
 
-                // Если есть URL (только у Location), оборачиваем всё в <Link>
-                return url ? (
-                  <Link to={`/locations/${locationId}`} className="informations__item" key={i}>
-                    {content}
-                  </Link>
-                ) : (
-                  <article className="informations__item" key={i}>
-                    {content}
-                  </article>
-                );
-              })}
+              return url ? (
+                <Link to={`/locations/${locationId}`} className="informations__item" key={i}>
+                  {content}
+                </Link>
+              ) : (
+                <article className="informations__item" key={i}>
+                  {content}
+                </article>
+              );
+            })}
           </div>
+
           <div className="character-details__info-block episodes-items">
             <h3>Episodes</h3>
-            {episodes.map((ep) => (
+            {episodesByIds.map((ep) => (
               <Link
                 to={`/episodes/${ep.id}`}
                 key={ep.id}
@@ -110,7 +99,7 @@ export default function CharacterDetails() {
                 </div>
                 <div className="episodes__item-svg">
                   <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93"/>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
                   </svg>
                 </div>
               </Link>

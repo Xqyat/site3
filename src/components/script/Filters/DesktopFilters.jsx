@@ -1,42 +1,5 @@
-// import '../../../index.css'
-// import FilterSelect from './FilterSelect';
-
-// export default function DesktopFilters({
-//   name,
-//   setName,
-//   type,
-//   setType,
-//   dimension,
-//   setDimension,
-//   typeOptions,
-//   dimensionOptions,
-// }) {
-//   return (
-//     <div className="filters desktop-only">
-//       <div className="filters__filter-item">
-//         <input
-//           className=""
-//           type="text"
-//           placeholder="Filter by name..."
-//           value={name}
-//           onChange={(e) => setName(e.target.value)}
-//         />
-//       </div>
-//       <FilterSelect
-//         value={type}
-//         onChange={setType}
-//         options={typeOptions}
-//       />
-//       <FilterSelect
-//         value={dimension}
-//         onChange={setDimension}
-//         options={dimensionOptions}
-//       />
-//     </div>
-//   );
-// }
-
 import FilterSelect from './FilterSelect';
+import { Search } from '../../icons/icons';
 
 export default function DesktopFilters({
   name,
@@ -46,6 +9,7 @@ export default function DesktopFilters({
   return (
     <div className="filters desktop-only">
       <div className="filters__filter-item">
+        <Search />
         <input
           type="text"
           placeholder="Filter by name..."

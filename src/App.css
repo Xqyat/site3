@@ -16,17 +16,15 @@
   align-items: center;
 }
 
-.header__logo img{
-  width: 46px;
-  height: 49px;
+.header__logo svg{
   transition: 0.4s;
 }
 
-.header__logo img:hover {
+.header__logo svg:hover {
   transform: scale(1.2);
 }
 
-.header__logo img:active {
+.header__logo svg:active {
   transform: scale(0.9);
 }
 

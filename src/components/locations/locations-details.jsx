@@ -1,36 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Cards from '../script/Content/Cards'; // импорт твоего компонента карточек
-
+import { useData } from '../../context/DataContext';
+import Cards from '../script/Content/Cards';
 
 export default function LocationDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [location, setLocation] = useState(null);
-  const [characters, setCharacters] = useState([]);
+
+  const {
+    location,
+    getLocationById,
+    characters,
+    getMultipleCharacters,
+  } = useData();
 
   useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/location/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Location not found');
-        return res.json();
-      })
-      .then(data => {
-        setLocation(data);
-  
-        const residentIds = data.residents.map(url => url.split('/').pop()).join(',');
-        return fetch(`https://rickandmortyapi.com/api/character/${residentIds}`);
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('Characters not found');
-        return res.json();
-      })
-      .then(charData => {
-        setCharacters(Array.isArray(charData) ? charData : [charData]);
-      })
-      .catch(error => console.error(error));
+    getLocationById(id);
   }, [id]);
-  
+
+  useEffect(() => {
+    if (location?.residents?.length) {
+      const ids = location.residents.map(url => url.split('/').pop());
+      getMultipleCharacters(ids);
+    }
+  }, [location]);
 
   if (!location) return <div>Loading...</div>;
 
@@ -59,13 +52,13 @@ export default function LocationDetails() {
       <div className="characters-wrapper">
         <h3 className="characters__subtitle">Residents</h3>
         <section className="card-list characters cards">
-            {characters.length > 0 ? (
-                characters.map(character => (
-                <Cards key={character.id} data={character} type="character" />
-                ))
-            ) : (
-                <p>Not Found</p>
-            )}
+          {characters.length > 0 ? (
+            characters.map(character => (
+              <Cards key={character.id} data={character} type="character" />
+            ))
+          ) : (
+            <p>Not Found</p>
+          )}
         </section>
       </div>
     </main>

@@ -1,35 +1,47 @@
 import './episodes.css';
 import { useEffect, useState } from 'react';
-import { DesktopFilters, MobileFilters, UseFilteredData } from '../../index';
 import Cards from '../script/Content/Cards';
 import LoadMoreBtn from '../script/Content/LoadMoreBtn';
 import main_logo from '../../assets/images/episodes.png';
-import search from '../../assets/icons/search.svg';
+import { Search } from '../icons/icons';
+import { useData } from '../../context/DataContext';
+
 export default function Episodes() {
 
-  const [name, setName] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
+  const [page, setPage] = useState(1);
 
-  const {
-    data: episodes,
-    nextPageUrl,
-    fetchMore,
-  } = UseFilteredData({
-    baseUrl: 'https://rickandmortyapi.com/api/episode',
-    isImmediate: true,
-    filters: { name }, 
-  });
+  const { episodes, getEpisodes } = useData();
+
+  
+
+  const filters = {
+    name: nameFilter,
+  };
+  
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      getEpisodes(page, filters); 
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [JSON.stringify(filters), page]);
+  
+  useEffect(() => {
+    setPage(1); 
+  }, [nameFilter]);
+
 
     return (
         <main className="main">
         <img src={main_logo} alt="Main logo" />
         
         <div className="filters__filter-item episodes-search">
-          <img src={search} alt="Search" />
+          <Search />
           <input
             type="text"
             placeholder="Filter by name or episode (ex. S01 or S01E02)"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={nameFilter}
+            onChange={(e) => setNameFilter(e.target.value)}
           />
         </div>
 
@@ -43,9 +55,7 @@ export default function Episodes() {
             <p>Not Found</p>
           )}
         </div>
-      {nextPageUrl && (
-          <LoadMoreBtn onClick={() => fetchMore()} />
-        )}
+      <LoadMoreBtn onClick={() => setPage(prev => prev + 1)} />
     </main>
     );
   }
