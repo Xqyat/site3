@@ -81,4 +81,12 @@ export const Search = ({width = "18pt", height = "18pt", className = ""})=>
     </svg>
     );
 
-// export const  = ({width = "18pt", height = "18pt", className = ""})=>
+export const ArrowBack = ({width = "12pt", height = "12pt", className = ""})=>
+(<svg width={width} height={height} viewBox="0 0 16 16" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="black"/>
+    </svg>
+    );
+export const DetailsArrow = ({width = "8pt", height = "10pt", className = ""})=>
+    (<svg width={width} height={height} viewBox="0 0 8 12" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
+</svg>);

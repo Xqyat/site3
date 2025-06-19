@@ -2,6 +2,7 @@ import './characters-details.css';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useData } from '../../context/DataContext';
+import { ArrowBack, DetailsArrow } from '../icons/icons';
 
 export default function CharacterDetails() {
   const { id } = useParams();
@@ -33,9 +34,7 @@ export default function CharacterDetails() {
   return (
     <main className="main">
       <button className="goback-btn" onClick={() => navigate(-1)}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="black" />
-        </svg>
+        <ArrowBack/>
         GO BACK
       </button>
 
@@ -64,9 +63,7 @@ export default function CharacterDetails() {
                   </div>
                   {url && (
                     <div className="informations__item-svg">
-                      <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
-                      </svg>
+                      <DetailsArrow/>
                     </div>
                   )}
                 </>
@@ -98,9 +95,7 @@ export default function CharacterDetails() {
                   <p>{ep.air_date}</p>
                 </div>
                 <div className="episodes__item-svg">
-                  <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z" fill="#8E8E93" />
-                  </svg>
+                  <DetailsArrow/>
                 </div>
               </Link>
             ))}
