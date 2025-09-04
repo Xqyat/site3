@@ -15,9 +15,10 @@ import Locations from './components/locations/locations';
 import LocationsDetails from './components/locations/locations-details';
 
 function App() {
+  const baseName = process.env.NODE_ENV === "production" ? "site3" : "/";
   return (
     <DataProvider>
-      <Router>
+      <Router basename={baseName}>
         <Header />
 
         <Routes>
